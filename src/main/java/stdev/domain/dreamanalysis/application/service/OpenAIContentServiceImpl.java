@@ -184,7 +184,6 @@ public class OpenAIContentServiceImpl implements OpenAIContentService {
                         "[꿈에서 느껴진 감정들과 그 의미에 대한 설명]\n" +
                         "\n" +
                         "💭 꿈의 의미: [왜 이런 꿈을 꾸었는지]\n" +
-                        "\n" +
                         "[꿈이 나타내는 심리상태나 현실에서의 연관성에 대한 해석]\n" +
                         "\n" +
                         "Make sure to format the titles exactly as shown, with emojis at the beginning and including the specific subject or emotions in the titles. IMPORTANT: In the '꿈의 의미' section, add a blank line after the title before starting the explanation. Your response must be written in Korean and should be between 450 and 500 characters.",

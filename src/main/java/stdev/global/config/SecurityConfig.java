@@ -54,7 +54,7 @@ public class SecurityConfig {
                 // CORS 설정 파일로 빼기
                 .cors((cors) -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOriginPatterns(List.of("https://stdev-15-fe.vercel.app", "http://localhost:3000"));
+                    config.setAllowedOriginPatterns(List.of("/api/**","/api/openai/lucky","https://stdev-15-fe.vercel.app", "http://localhost:3000"));
                     config.setAllowedMethods(Collections.singletonList("*"));
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(Collections.singletonList("*"));
@@ -66,9 +66,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests((url) -> url
                         .requestMatchers("/api/healthcheck").permitAll()
                         .requestMatchers("/api/oauth2/login").permitAll()
-                        .requestMatchers("/api/oauth2/callback").permitAll()
+                        .requestMatchers("/api/oauth2/callback","/api/**").permitAll()
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers("/favicon.ico").permitAll()
+                        .requestMatchers("/favicon.ico","/api/openai/lucky").permitAll()
                         .requestMatchers("/api/reissue").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement((session) -> session
