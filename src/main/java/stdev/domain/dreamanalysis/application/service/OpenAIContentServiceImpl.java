@@ -194,11 +194,9 @@ public class OpenAIContentServiceImpl implements OpenAIContentService {
 
     private String createImagePrompt(String topic) {
         return String.format(
-                "\"%s\"에 관한 꿈을 고해상도로 시각화한 이미지. " +
-                        "꿈의 핵심 감정(공포, 혼란, 기쁨, 신비로움 등)을 시각적으로 자연스럽게 반영하고, " +
-                        "비현실적이고 초현실적인 분위기를 가진 장면으로 구성. " +
-                        "빛과 그림자, 색채, 인물의 동세와 표정 등을 통해 감정과 분위기를 전달할 것. " +
-                        "텍스트나 문구, 로고 등은 절대 포함하지 말 것.",
+                "\"%s\"에 관한 주제를 시각적으로 매우 현실적으로 반영한 이미지를 생성해주세요." +
+                        "주제의 핵심 감정(공포, 혼란, 기쁨, 신비로움 등)을 표현해주세요." +
+                        "텍스트나 문구, 로고 등은 절대 포함하지 마세요.",
                 topic
         );
     }

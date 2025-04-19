@@ -66,8 +66,7 @@ public class CalendarServiceImpl implements CalendarService {
 
     @Override
     public List<CalendarResponse> getWeek(String userId, CalendarRequest req) {
-        LocalDate today = LocalDate.now();
-
+        LocalDate today = LocalDate.of(req.year(), req.month(), req.day()); // 이거 근데 오늘일수동 있고 아닐 수 도 있음
         // 요청한 달이 오늘 달이 아닌 경우 -> 요청 기준의 날짜로 보정
         if (req.year() != today.getYear() || req.month() != today.getMonthValue()) {
             today = LocalDate.of(req.year(), req.month(), 1);
