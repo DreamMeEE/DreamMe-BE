@@ -2,6 +2,7 @@ package stdev.domain.dreamdiary.application;
 
 import org.springframework.stereotype.Repository;
 import stdev.domain.dreamdiary.presentation.dto.request.CalendarRequest;
+import stdev.domain.dreamdiary.presentation.dto.request.DiaryPatchRequest;
 import stdev.domain.dreamdiary.presentation.dto.request.DiaryPostRequest;
 import stdev.domain.dreamdiary.presentation.dto.response.DiaryGetResponse;
 import stdev.domain.dreamdiary.presentation.dto.response.DiaryPostResponse;
@@ -11,6 +12,9 @@ import java.util.List;
 
 public interface DreamDiaryService {
     DiaryPostResponse dreamPost(DiaryPostRequest req, String userId);
+
+
+    DiaryPostResponse dreamPatch(DiaryPatchRequest req);
 
     DiaryGetResponse dreamGet(Long id);
 

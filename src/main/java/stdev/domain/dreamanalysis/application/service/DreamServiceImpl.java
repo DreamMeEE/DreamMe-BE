@@ -22,10 +22,9 @@ public class DreamServiceImpl implements DreamService {
 
 
     @Override
-    public void dreamPost(String comment, MultipartFile image) throws IOException {
+    public String dreamPost(MultipartFile image) throws IOException {
         String imageUrl = fileStore.storeFile(image);
-        DreamAnalysis dream = DreamAnalysis.builder().dreamImageUrl(imageUrl).dreamComment(comment).build();
 
-        dreamRepository.save(dream);
+        return imageUrl;
     }
 }

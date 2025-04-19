@@ -5,15 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import stdev.domain.dreamdiary.application.DreamDiaryService;
 import stdev.domain.dreamdiary.presentation.dto.request.CalendarRequest;
+import stdev.domain.dreamdiary.presentation.dto.request.DiaryPatchRequest;
 import stdev.domain.dreamdiary.presentation.dto.request.DiaryPostRequest;
 import stdev.domain.dreamdiary.presentation.dto.response.DiaryGetResponse;
 import stdev.domain.dreamdiary.presentation.dto.response.DiaryPostResponse;
 import stdev.domain.dreamdiary.presentation.dto.response.SleepRateResponse;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -32,6 +31,14 @@ public class DreamDiaryController {
         return ResponseEntity.ok(diaryPostResponse);
     }
 
+    @PatchMapping("/dream")
+    public ResponseEntity<DiaryPostResponse> dreamDiaryPatch(@RequestBody DiaryPatchRequest req,
+                                                             @AuthenticationPrincipal String userId) {
+
+        DiaryPostResponse diaryPostResponse = dreamDiaryService.dreamPatch(req);
+        return ResponseEntity.ok(diaryPostResponse);
+    }
+
     @GetMapping("/dream/diary/{id}")
     public ResponseEntity<DiaryGetResponse> dreamDiaryGet(@PathVariable Long id) {
         return ResponseEntity.ok(dreamDiaryService.dreamGet(id));
@@ -40,7 +47,7 @@ public class DreamDiaryController {
 
     @GetMapping("/sleep/rate")
     public ResponseEntity<List<SleepRateResponse>> sleepRate(@ModelAttribute CalendarRequest req,
-            @AuthenticationPrincipal String userId) {
+                                                             @AuthenticationPrincipal String userId) {
 
         return ResponseEntity.ok(dreamDiaryService.sleepRate(userId, req));
     }

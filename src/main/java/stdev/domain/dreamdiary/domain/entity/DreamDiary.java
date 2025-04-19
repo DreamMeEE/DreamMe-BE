@@ -54,4 +54,15 @@ public class DreamDiary {
 
         this.diaryCategory=diaryCategory;
     }
+
+    public void updateDiaryInfo(LocalDateTime sleepStart, LocalDateTime sleepEnd, String note,
+                             String rate, String title, String content, String diaryCategory) {
+        this.sleepStart = sleepStart;
+        this.sleepEnd = sleepEnd;
+        this.note = note;
+        this.rate = rate;
+        this.title = title;
+        this.content = content;
+        this.diaryCategory = diaryCategory;
+    }
 }

@@ -67,11 +67,11 @@ public class OpenAILuckyServiceImpl implements OpenAILuckyService {
                     "Bearer " + apiKey,
                     request
             );
-            String and = "\n😊/😨 운세에 대해서 알아볼까요?\n";
+            String and = "\n\n 운세에 대해서 알아볼까요?\n";
             if (response.getChoices() != null && !response.getChoices().isEmpty()) {
                 String content = response.getChoices().get(0).getMessage().getContent();
                 log.info("Generated text: {}", content.substring(0, Math.min(content.length(), 100)) + "...");
-                return LuckyGenerationResponse.of(content + and + lucky.getComment(), lucky.getLuckyImage());
+                return LuckyGenerationResponse.of(content + and + lucky.getComment(), lucky.getLuckyImage(), lucky.getTitle());
 
             } else {
                 throw new UserNotFoundException("내용을 생성할 수 없습니다.");
@@ -119,7 +119,7 @@ public class OpenAILuckyServiceImpl implements OpenAILuckyService {
         return String.format(
                 "Then structure your response in this exact format with emojis:\n" +
                         "\n" +
-                        "🔍 꿈에 대해서 알아볼까요?:\n" +
+                        "꿈에 대해서 알아볼까요?:" +
                         "\n" + // 여기에 줄바꿈 추가
                         "Please analyze the following dream: \\\"%s\\\".\\n\" + Your response must be written in Korean and should be between 70 and 100 characters.\",\n",
                 req.topic()

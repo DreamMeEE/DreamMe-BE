@@ -12,7 +12,9 @@ import stdev.domain.dreamdiary.domain.entity.DreamDiary;
 import stdev.domain.dreamdiary.domain.repository.DiaryCategoryRepository;
 import stdev.domain.dreamdiary.domain.repository.DreamDiaryRepository;
 import stdev.domain.dreamdiary.infra.exception.InfromationDiaryException;
+import stdev.domain.dreamdiary.infra.exception.InfromationDiaryException2;
 import stdev.domain.dreamdiary.presentation.dto.request.CalendarRequest;
+import stdev.domain.dreamdiary.presentation.dto.request.DiaryPatchRequest;
 import stdev.domain.dreamdiary.presentation.dto.request.DiaryPostRequest;
 import stdev.domain.dreamdiary.presentation.dto.response.CalendarResponse;
 import stdev.domain.dreamdiary.presentation.dto.response.DiaryGetResponse;
@@ -127,6 +129,32 @@ public class DreamDiaryServiceImpl implements DreamDiaryService {
             Record save = recordRepository.save(record);
             return DiaryPostResponse.of(save.getId());
         }
+    }
+
+    @Override
+    public DiaryPostResponse dreamPatch(DiaryPatchRequest req) {
+        Record record = recordRepository.findById(req.id()).orElse(null);
+        if(record ==null){
+            throw new UserNotFoundException("기록 정보가 없어요");
+        }
+
+        DreamDiary dreamDiary = dreamDiaryRepository.findById(record.getId()).orElse(null);
+
+        if(dreamDiary ==null){
+            throw new UserNotFoundException("기록 정보가 없어요222");
+        }
+
+        List<DreamDiary> bySleepStartYearAndMonth = dreamDiaryRepository.findBySleepStartYearAndMonthAndDay(
+                req.sleepStart().getYear(), req.sleepStart().getMonthValue(), req.sleepStart().getDayOfMonth());
+
+        if (!bySleepStartYearAndMonth.isEmpty()) {
+            throw new InfromationDiaryException2();
+        }
+
+
+        dreamDiary.updateDiaryInfo(req.sleepStart(), req.sleepEnd(), req.note(), req.rate(), req.title(), req.content(), req.diaryCategory());
+
+        return DiaryPostResponse.of(req.id());
     }
 
     @Override

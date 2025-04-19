@@ -22,14 +22,17 @@ public class Lucky {
 
     private String keyword;
 
+    private  String title;
+
 
     @Column(length = 1000)
     private String comment;
 
     @Builder
-    public Lucky(String luckyImage, String keyword, String comment){
+    public Lucky(String luckyImage, String keyword, String title, String comment){
         this.luckyImage=luckyImage;
         this.keyword=keyword;
+        this.title=title;
         this.comment=comment;
     }
 }

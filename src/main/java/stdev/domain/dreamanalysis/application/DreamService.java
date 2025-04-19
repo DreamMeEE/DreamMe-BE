@@ -6,5 +6,5 @@ import java.io.IOException;
 
 public interface DreamService {
 
-    void dreamPost(String comment, MultipartFile image) throws IOException;
+    String dreamPost(MultipartFile image) throws IOException;
 }
