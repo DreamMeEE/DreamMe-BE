@@ -42,7 +42,7 @@ public class CalendarServiceImpl implements CalendarService {
 
         Map<Integer, DreamDiary> map = new HashMap<>();
         for (DreamDiary d : diaries) {
-            int day = d.getRecord().getDreamDiary().getSleepStart().getDayOfMonth();
+            int day = d.getRecord().getDreamDiary().getSleepEnd().getDayOfMonth();
 
             map.put(day, d);
         }
