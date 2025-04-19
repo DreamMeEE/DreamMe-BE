@@ -29,8 +29,8 @@ public interface DreamDiaryRepository extends JpaRepository<DreamDiary, Long> {
             JOIN d.record r 
             JOIN r.user u 
             WHERE u.id = :userId 
-            AND FUNCTION('MONTH', d.sleepStart) = :month 
-            AND FUNCTION('YEAR', d.sleepStart) = :year
+            AND FUNCTION('MONTH', d.sleepEnd) = :month 
+            AND FUNCTION('YEAR', d.sleepEnd) = :year
             """)
     List<DreamDiary> findDreamDiariesByUserIdAndMonth(
             @Param("userId") String userId,
@@ -54,7 +54,7 @@ public interface DreamDiaryRepository extends JpaRepository<DreamDiary, Long> {
     JOIN d.record r
     JOIN r.user u
     WHERE u.id = :userId
-    AND DATE(d.sleepStart) BETWEEN :startDate AND :endDate
+    AND DATE(d.sleepEnd) BETWEEN :startDate AND :endDate
 """)
     List<DreamDiary> findWeekDreamsByUserId(
             @Param("userId") String userId,
