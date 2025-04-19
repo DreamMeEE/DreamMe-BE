@@ -37,9 +37,9 @@ public class OpenAILuckyServiceImpl implements OpenAILuckyService {
     public LuckyGenerationResponse generateLucky(LuckyGenerationRequest req) {
 
 
-        String dreamCategory = extracted(req);
+//        String dreamCategory = extracted(req);
 
-        Lucky lucky = luckyRepository.findByKeyword(req.luckyCategory() + dreamCategory).orElse(null);
+        Lucky lucky = luckyRepository.findByKeyword(req.luckyCategory() + req.dreamCategory()).orElse(null);
 
         if (lucky == null) {
             throw new UserNotFoundException("엥 해당 럭키가 없어...");

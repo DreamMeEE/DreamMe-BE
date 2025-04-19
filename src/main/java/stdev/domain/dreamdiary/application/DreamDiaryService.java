@@ -14,7 +14,7 @@ public interface DreamDiaryService {
     DiaryPostResponse dreamPost(DiaryPostRequest req, String userId);
 
 
-    DiaryPostResponse dreamPatch(DiaryPatchRequest req);
+    DiaryPostResponse dreamPatch(String userId, DiaryPatchRequest req);
 
     DiaryGetResponse dreamGet(Long id);
 

@@ -10,6 +10,9 @@ spring:
     url: ${MYSQL_URL}
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
+    hikari:
+      maximum-pool-size: 20  # 필요한 만큼만
+      minimum-idle: 5
   jpa:
     hibernate:
       ddl-auto: update

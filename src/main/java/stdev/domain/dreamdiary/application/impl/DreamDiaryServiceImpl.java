@@ -63,9 +63,10 @@ public class DreamDiaryServiceImpl implements DreamDiaryService {
             throw new UserNotFoundException("회원 정보 없음요");
         }
 
-        List<DreamDiary> bySleepStartYearAndMonth = dreamDiaryRepository.findBySleepStartYearAndMonthAndDay(
-                req.sleepStart().getYear(), req.sleepStart().getMonthValue(), req.sleepStart().getDayOfMonth());
+        List<DreamDiary> bySleepStartYearAndMonth = dreamDiaryRepository.findByUserIdAndSleepEndYearMonthDay(userId,
+                req.sleepEnd().getYear(), req.sleepStart().getMonthValue(), req.sleepEnd().getDayOfMonth());
 
+        log.info(String.valueOf(bySleepStartYearAndMonth.size()));
         if (!bySleepStartYearAndMonth.isEmpty()) {
             throw new InfromationDiaryException();
         }
@@ -132,7 +133,7 @@ public class DreamDiaryServiceImpl implements DreamDiaryService {
     }
 
     @Override
-    public DiaryPostResponse dreamPatch(DiaryPatchRequest req) {
+    public DiaryPostResponse dreamPatch(String userId, DiaryPatchRequest req) {
         Record record = recordRepository.findById(req.id()).orElse(null);
         if(record ==null){
             throw new UserNotFoundException("기록 정보가 없어요");
@@ -144,8 +145,8 @@ public class DreamDiaryServiceImpl implements DreamDiaryService {
             throw new UserNotFoundException("기록 정보가 없어요222");
         }
 
-        List<DreamDiary> bySleepStartYearAndMonth = dreamDiaryRepository.findBySleepStartYearAndMonthAndDay(
-                req.sleepStart().getYear(), req.sleepStart().getMonthValue(), req.sleepStart().getDayOfMonth());
+        List<DreamDiary> bySleepStartYearAndMonth = dreamDiaryRepository.findByUserIdAndSleepEndYearMonthDay(userId,
+                req.sleepEnd().getYear(), req.sleepStart().getMonthValue(), req.sleepEnd().getDayOfMonth());
 
         if (!bySleepStartYearAndMonth.isEmpty()) {
             throw new InfromationDiaryException2();

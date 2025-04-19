@@ -40,13 +40,18 @@ public interface DreamDiaryRepository extends JpaRepository<DreamDiary, Long> {
 
     @Query("""
     SELECT d FROM DreamDiary d
-    WHERE FUNCTION('YEAR', d.sleepStart) = :year
-      AND FUNCTION('MONTH', d.sleepStart) = :month
-      AND FUNCTION('DAY', d.sleepStart) = :day
+    JOIN d.record r
+    JOIN r.user u
+    WHERE u.id = :userId
+      AND FUNCTION('YEAR', d.sleepEnd) = :year
+      AND FUNCTION('MONTH', d.sleepEnd) = :month
+      AND FUNCTION('DAY', d.sleepEnd) = :day
 """)
-    List<DreamDiary> findBySleepStartYearAndMonthAndDay(@Param("year") int year,
-                                                        @Param("month") int month,
-                                                        @Param("day") int day);
+    List<DreamDiary> findByUserIdAndSleepEndYearMonthDay(@Param("userId") String userId,
+                                                         @Param("year") int year,
+                                                         @Param("month") int month,
+                                                         @Param("day") int day);
+
 
 
     @Query("""

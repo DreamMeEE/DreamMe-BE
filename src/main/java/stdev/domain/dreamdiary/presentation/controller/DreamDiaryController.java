@@ -35,7 +35,7 @@ public class DreamDiaryController {
     public ResponseEntity<DiaryPostResponse> dreamDiaryPatch(@RequestBody DiaryPatchRequest req,
                                                              @AuthenticationPrincipal String userId) {
 
-        DiaryPostResponse diaryPostResponse = dreamDiaryService.dreamPatch(req);
+        DiaryPostResponse diaryPostResponse = dreamDiaryService.dreamPatch(userId, req);
         return ResponseEntity.ok(diaryPostResponse);
     }
 
