@@ -134,12 +134,13 @@ public class DreamDiaryServiceImpl implements DreamDiaryService {
 
     @Override
     public DiaryPostResponse dreamPatch(String userId, DiaryPatchRequest req) {
+        log.info(String.valueOf(req.id()));
         Record record = recordRepository.findById(req.id()).orElse(null);
         if(record ==null){
             throw new UserNotFoundException("기록 정보가 없어요");
         }
 
-        DreamDiary dreamDiary = dreamDiaryRepository.findById(record.getId()).orElse(null);
+        DreamDiary dreamDiary = dreamDiaryRepository.findById(record.getDreamDiary().getId()).orElse(null);
 
         if(dreamDiary ==null){
             throw new UserNotFoundException("기록 정보가 없어요222");
