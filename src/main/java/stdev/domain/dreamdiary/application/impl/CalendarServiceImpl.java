@@ -81,7 +81,7 @@ public class CalendarServiceImpl implements CalendarService {
 
         Map<Integer, DreamDiary> diaryMap = diaries.stream()
                 .collect(Collectors.toMap(
-                        d -> d.getSleepStart().getDayOfMonth(),
+                        d -> d.getSleepEnd().getDayOfMonth(),
                         d -> d
                 ));
 

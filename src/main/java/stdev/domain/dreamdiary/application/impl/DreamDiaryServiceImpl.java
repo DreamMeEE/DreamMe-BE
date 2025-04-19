@@ -215,7 +215,7 @@ public class DreamDiaryServiceImpl implements DreamDiaryService {
 
         Map<Integer, DreamDiary> diaryMap = diaries.stream()
                 .collect(Collectors.toMap(
-                        d -> d.getSleepStart().getDayOfMonth(),
+                        d -> d.getSleepEnd().getDayOfMonth(),
                         d -> d
                 ));
 
