@@ -1,4 +1,4 @@
-name: flowfit CI/CD
+name: dreamme CI/CD
 
 on:
   push:
@@ -70,7 +70,50 @@ jobs:
           source: "docker-compose.yml"
           target: "/home/ubuntu/flowfit"
 
-      # (8.7) .env 파일 EC2로 복사 (환경 변수 문제 방지)
+      # (8.7) Nginx 설정 파일 생성 및 복사
+      - name: Create and Copy Nginx config to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cat > /tmp/dream << 'EOL'
+            upstream backend {
+                server localhost:8081;
+                server localhost:8082;
+                server localhost:8083;
+            }
+            
+            server {
+                listen 80;
+                server_name dream.anja.p-e.kr;
+            
+                access_log /var/log/nginx/dream.access.log;
+                error_log /var/log/nginx/dream.error.log;
+            
+                location / {
+                    proxy_pass http://backend;
+                    proxy_set_header Host $host;
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                    proxy_set_header X-Forwarded-Proto $scheme;
+            
+                    proxy_http_version 1.1;
+                    proxy_set_header Connection "";
+            
+                    proxy_connect_timeout 300;
+                    proxy_send_timeout 300;
+                    proxy_read_timeout 300;
+                    send_timeout 300;
+                }
+            }
+            EOL
+            sudo mv /tmp/dream /etc/nginx/sites-available/dream
+            sudo ln -sf /etc/nginx/sites-available/dream /etc/nginx/sites-enabled/
+            sudo nginx -t && sudo systemctl reload nginx
+
+      # (8.8) .env 파일 EC2로 복사 (환경 변수 문제 방지)
       - name: Copy .env file to EC2
         uses: appleboy/scp-action@master
         with:
@@ -89,8 +132,75 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd /home/ubuntu/flowfit
+            
+            # 기존 docker-compose.yml 백업 및 새 파일 생성
+            cp docker-compose.yml docker-compose.yml.bak
+            
+            cat > docker-compose.yml << 'EOL'
+            version: '3.8'
+            
+            services:
+              app1:
+                image: chltmdgh522/stdev:latest
+                container_name: app1
+                ports:
+                  - "8081:8080"
+                environment:
+                  - SPRING_PROFILES_ACTIVE=prod
+                  - REDIS_HOST=redis
+                  - REDIS_PORT=6379
+                  - REDIS_PASSWORD=${REDIS_PASSWORD}
+                depends_on:
+                  - redis
+            
+              app2:
+                image: chltmdgh522/stdev:latest
+                container_name: app2
+                ports:
+                  - "8082:8080"
+                environment:
+                  - SPRING_PROFILES_ACTIVE=prod
+                  - REDIS_HOST=redis
+                  - REDIS_PORT=6379
+                  - REDIS_PASSWORD=${REDIS_PASSWORD}
+                depends_on:
+                  - redis
+            
+              app3:
+                image: chltmdgh522/stdev:latest
+                container_name: app3
+                ports:
+                  - "8083:8080"
+                environment:
+                  - SPRING_PROFILES_ACTIVE=prod
+                  - REDIS_HOST=redis
+                  - REDIS_PORT=6379
+                  - REDIS_PASSWORD=${REDIS_PASSWORD}
+                depends_on:
+                  - redis
+            
+              redis:
+                image: redis
+                container_name: redis
+                command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+                ports:
+                  - "6379:6379"
+                environment:
+                  - REDIS_PASSWORD=${REDIS_PASSWORD}
+            EOL
+            
             sudo ln -s /usr/bin/docker-compose /usr/local/bin/docker-compose || true  # 심볼릭 링크 생성 (이미 있으면 무시)
             docker compose down || true  # 기존 컨테이너 종료 (V2 스타일)
             docker image prune -a -f
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO_NAME }}:latest
             docker compose up -d  # V2 스타일로 컨테이너 실행
+            
+            # Nginx 설정 테스트 및 재시작
+            sudo nginx -t && sudo systemctl reload nginx
+            
+            # 로드밸런싱 상태 확인
+            echo "Checking all containers status:"
+            docker ps | grep app
+            
+            echo "Checking Nginx config:"
+            sudo nginx -t
