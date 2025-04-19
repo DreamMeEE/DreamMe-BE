@@ -145,12 +145,12 @@ public class DreamDiaryServiceImpl implements DreamDiaryService {
             throw new UserNotFoundException("기록 정보가 없어요222");
         }
 
-        List<DreamDiary> bySleepStartYearAndMonth = dreamDiaryRepository.findByUserIdAndSleepEndYearMonthDay(userId,
-                req.sleepEnd().getYear(), req.sleepStart().getMonthValue(), req.sleepEnd().getDayOfMonth());
-
-        if (!bySleepStartYearAndMonth.isEmpty()) {
-            throw new InfromationDiaryException2();
-        }
+//        List<DreamDiary> bySleepStartYearAndMonth = dreamDiaryRepository.findByUserIdAndSleepEndYearMonthDay(userId,
+//                req.sleepEnd().getYear(), req.sleepStart().getMonthValue(), req.sleepEnd().getDayOfMonth());
+//
+//        if (!bySleepStartYearAndMonth.isEmpty()) {
+//            throw new InfromationDiaryException2();
+//        }
 
 
         dreamDiary.updateDiaryInfo(req.sleepStart(), req.sleepEnd(), req.note(), req.rate(), req.title(), req.content(), req.diaryCategory());
