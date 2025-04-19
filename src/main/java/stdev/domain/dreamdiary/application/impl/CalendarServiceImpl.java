@@ -94,7 +94,7 @@ public class CalendarServiceImpl implements CalendarService {
                         date.getDayOfMonth(),
                         d.getRate(),
                         Duration.between(d.getSleepStart(), d.getSleepEnd()).toHours(),
-                        d.getId()
+                        d.getRecord().getId()
                 ));
             } else {
                 responses.add(CalendarResponse.of(date.getDayOfMonth(), null, null, null));
