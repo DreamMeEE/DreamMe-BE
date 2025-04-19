@@ -67,7 +67,7 @@ public class OpenAILuckyServiceImpl implements OpenAILuckyService {
                     "Bearer " + apiKey,
                     request
             );
-            String and = "\n\n 운세에 대해서 알아볼까요?\n";
+            String and = "\n\n운세에 대해서 알아볼까요?\n";
             if (response.getChoices() != null && !response.getChoices().isEmpty()) {
                 String content = response.getChoices().get(0).getMessage().getContent();
                 log.info("Generated text: {}", content.substring(0, Math.min(content.length(), 100)) + "...");
