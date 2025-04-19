@@ -195,7 +195,7 @@ public class DreamDiaryServiceImpl implements DreamDiaryService {
 
         log.info(dreamDiary.getDiaryCategory());
 
-        return DiaryGetResponse.of(dreamDiary.getId(), dreamDiary.getSleepStart().toLocalTime(), dreamDiary.getSleepEnd().toLocalTime(), dreamDiary.getNote()
+        return DiaryGetResponse.of(dreamDiary.getRecord().getId(), dreamDiary.getSleepStart().toLocalTime(), dreamDiary.getSleepEnd().toLocalTime(), dreamDiary.getNote()
                 , dreamDiary.getRate(), dreamDiary.getTitle(), dreamDiary.getContent(), dreamDiary.getDiaryCategory(), sb.toString(), flag);
     }
 
